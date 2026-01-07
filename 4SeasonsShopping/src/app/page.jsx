@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ShoppingCart } from 'lucide-react';
+import { getAssetPath } from '@/config';
 
 import styles from './page.module.css';
 import clsx from 'clsx';
@@ -113,7 +114,7 @@ export default function Home() {
             >
               <X size={18} color="black" /> Close
             </button>
-            <ARViewer modelSrc={`/${currentSeason.id}.glb`} />
+            <ARViewer modelSrc={getAssetPath(`${currentSeason.id}.glb`)} />
           </motion.div>
         )}
       </AnimatePresence>

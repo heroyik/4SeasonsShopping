@@ -2,6 +2,7 @@
 
 import { useGLTF, Float, Html } from '@react-three/drei';
 import { Suspense } from 'react';
+import { getAssetPath } from '@/config';
 
 function Model({ url, scale = 1, ...props }) {
   const { scene } = useGLTF(url);
@@ -22,23 +23,23 @@ function Model({ url, scale = 1, ...props }) {
 }
 
 // Preload all seasonal models
-useGLTF.preload('/spring.glb');
-useGLTF.preload('/summer.glb');
-useGLTF.preload('/autumn.glb');
-useGLTF.preload('/winter.glb');
+useGLTF.preload(getAssetPath('spring.glb'));
+useGLTF.preload(getAssetPath('summer.glb'));
+useGLTF.preload(getAssetPath('autumn.glb'));
+useGLTF.preload(getAssetPath('winter.glb'));
 
 import Box from './Box';
 
 export default function SeasonalModel({ season }) {
   // Map season name to file
   const modelFiles = {
-    spring: '/spring.glb',
-    summer: '/summer.glb',
-    autumn: '/autumn.glb',
-    winter: '/winter.glb',
+    spring: getAssetPath('spring.glb'),
+    summer: getAssetPath('summer.glb'),
+    autumn: getAssetPath('autumn.glb'),
+    winter: getAssetPath('winter.glb'),
   };
 
-  const url = modelFiles[season.toLowerCase()] || '/spring.glb';
+  const url = modelFiles[season.toLowerCase()] || getAssetPath('spring.glb');
 
   return (
     <Suspense fallback={<Box scale={0.5} />}>
