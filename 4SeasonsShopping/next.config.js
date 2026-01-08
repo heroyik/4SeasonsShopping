@@ -1,12 +1,18 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === "production";
+const repoName = "/4SeasonsShopping";
+
 const nextConfig = {
-  output: 'export',
+  output: "export",
   images: {
     unoptimized: true,
   },
-  basePath: '/4SeasonsShopping',
-  assetPrefix: '/4SeasonsShopping',
-  transpilePackages: ['three'],
+  basePath: isProd ? repoName : "",
+  assetPrefix: isProd ? repoName : "",
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isProd ? repoName : "",
+  },
+  transpilePackages: ["three"],
   reactStrictMode: false,
 };
 
