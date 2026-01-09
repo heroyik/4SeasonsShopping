@@ -62,5 +62,3 @@ A high-end shopping experience built with modern web technologies, featuring int
 ## 🎨 Design Philosophy
 
 "4SEASONS" focuses on **Visual Excellence** and **Interactive Depth**. The store uses smooth gradients, glassmorphism UI elements, and subtle micro-animations to create a premium, state-of-the-art feel that wows the user at first glance.
-
-<heroyik@gmail.com> 티염둥이
