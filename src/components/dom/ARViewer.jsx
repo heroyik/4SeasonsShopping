@@ -145,7 +145,7 @@ const ARViewer = ({ modelSrc, poster }) => {
 
   // Determine when to show UI
   const isInAR = arStatus === 'session-started' || arStatus === 'object-placed';
-  const showCaptureUI = !isInAR || arStatus === 'object-placed';
+  const showCaptureUI = arStatus === 'object-placed';
   const showAREntry = arStatus === 'not-presenting';
 
   return (
