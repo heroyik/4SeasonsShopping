@@ -46,33 +46,117 @@ const ARViewer = ({ modelSrc, poster }) => {
     return () => clearInterval(timerIntervalRef.current);
   }, [isRecording]);
 
-  const takeScreenshot = async () => {
-    if (!viewerRef.current) return;
+  const screenStreamRef = useRef(null);
+
+  // Helper to get or request screen stream (persistent)
+  const getScreenStream = useCallback(async () => {
+    // If we already have an active stream, reuse it
+    if (screenStreamRef.current && screenStreamRef.current.active) {
+      return screenStreamRef.current;
+    }
+
     try {
-      const blob = await viewerRef.current.toBlob({ idealAspect: true });
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        video: { displaySurface: 'browser' },
+        audio: false,
+        selfBrowserSurface: 'include', // Hint to prioritize current tab
+        preferCurrentTab: true, // Hint to prioritize current tab
+      });
+
+      // Handle user stopping the stream via browser UI
+      stream.getVideoTracks()[0].onended = () => {
+        screenStreamRef.current = null;
+        if (isRecording) {
+          stopRecording();
+        }
+      };
+
+      screenStreamRef.current = stream;
+      return stream;
+    } catch (err) {
+      console.error('Failed to get display media:', err);
+      // If user cancels, ensure we clean up
+      screenStreamRef.current = null;
+      throw err;
+    }
+  }, [isRecording]); // depend on isRecording to stop it if stream ends
+
+  // Cleanup stream on unmount
+  useEffect(() => {
+    return () => {
+      if (screenStreamRef.current) {
+        screenStreamRef.current.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, []);
+
+  const takeScreenshot = async () => {
+    try {
+      const stream = await getScreenStream();
+      const track = stream.getVideoTracks()[0];
+      const imageCapture = new ImageCapture(track);
+
+      let bitmap;
+      try {
+        bitmap = await imageCapture.grabFrame();
+      } catch (e) {
+        // Fallback if grabFrame not supported or fails
+        // Create temp video element to grab frame
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        video.muted = true;
+        await video.play();
+        // Wait a tick for frame
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
+
+        // Cleanup temp video
+        video.pause();
+        video.srcObject = null;
+
+        // Convert canvas to blob
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `4seasons-snapshot-${Date.now()}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+        return;
+      }
+
+      // If grabFrame worked
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(bitmap, 0, 0);
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `4seasons-snapshot-${Date.now()}.png`;
       a.click();
       URL.revokeObjectURL(url);
+
     } catch (err) {
       console.error('Snapshot failed:', err);
+      alert('화면 캡처 권한이 필요합니다.');
     }
   };
 
-  const startRecording = useCallback(() => {
-    if (!viewerRef.current || isRecording) return;
-
-    // Attempt to find canvas in shadowRoot or standard query
-    const canvas = viewerRef.current.shadowRoot?.querySelector('canvas') || viewerRef.current.querySelector('canvas');
-    if (!canvas) {
-      console.error('Could not find canvas');
-      return;
-    }
+  const startRecording = useCallback(async () => {
+    if (isRecording) return;
 
     try {
-      const stream = canvas.captureStream(30);
+      const stream = await getScreenStream();
       const mimeType = MediaRecorder.isTypeSupported('video/webm; codecs=vp9')
         ? 'video/webm; codecs=vp9'
         : 'video/webm';
@@ -93,19 +177,20 @@ const ARViewer = ({ modelSrc, poster }) => {
         a.download = `4seasons-recording-${Date.now()}.webm`;
         a.click();
         URL.revokeObjectURL(url);
+
+        // IMPORTANT: We do NOT stop the stream tracks here, so we can reuse the stream.
       };
 
       recorder.start();
       setIsRecording(true);
 
-      // Haptic feedback if available
       if (window.navigator?.vibrate) {
         window.navigator.vibrate(50);
       }
     } catch (err) {
       console.error('Recording failed to start:', err);
     }
-  }, [isRecording]);
+  }, [isRecording, getScreenStream]);
 
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current && isRecording) {
