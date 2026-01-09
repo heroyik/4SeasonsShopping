@@ -1,5 +1,6 @@
 # 4SEASONS - Premium 3D Concept Store
-![Deploy to GitHub Pages](https://github.com/heroyik/4SeasonsShopping/actions/workflows/deploy.yml/badge.svg)
+
+![Deploy to GitHub Pages](https://github.com/heroyik/4SeasonsShop/actions/workflows/nextjs_deploy.yml/badge.svg)
 
 A high-end shopping experience built with modern web technologies, featuring interactive 3D product visualization and seasonal themes.
 
@@ -22,26 +23,44 @@ A high-end shopping experience built with modern web technologies, featuring int
 
 ## 🛠 Project Structure
 
+- `.github/workflows/`: CI/CD configurations.
 - `src/app/`: Next.js 16 Page/Layout components.
 - `src/components/canvas/`: Three.js and React Three Fiber scene components.
 - `src/components/dom/`: React DOM components for UI and AR viewing.
-- `public/`: Assets including `.glb` models and brand icons.
+- `public/`: Static assets including `.glb` models and brand icons.
+- `assets/`: Project assets.
 
 ## 🏁 Getting Started
 
 1. **Install dependencies**:
+
    ```bash
    npm install --legacy-peer-deps
    ```
 
 2. **Run the development server**:
+
    ```bash
    npm run dev
    ```
 
-3. **Open the app**:
+3. **Build for production**:
+
+   ```bash
+   npm run build
+   ```
+
+4. **Start the production server**:
+
+   ```bash
+   npm run start
+   ```
+
+5. **Open the app**:
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 🎨 Design Philosophy
 
 "4SEASONS" focuses on **Visual Excellence** and **Interactive Depth**. The store uses smooth gradients, glassmorphism UI elements, and subtle micro-animations to create a premium, state-of-the-art feel that wows the user at first glance.
+
+<heroyik@gmail.com> 티염둥이
