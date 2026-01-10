@@ -39,11 +39,15 @@ export default function SeasonalModel({ season }) {
     winter: getAssetPath('winter_nick_high_quality.glb'),
   };
 
-  const url = modelFiles[season.toLowerCase()] || getAssetPath('spring.glb');
+  const url = modelFiles[season.id.toLowerCase()] || getAssetPath('spring.glb');
 
   return (
     <Suspense fallback={<Box scale={0.5} />}>
-      <Model url={url} scale={2.5} position={[0, -2, 0]} />
+      <Model
+        url={url}
+        scale={season.modelScale || 1.8}
+        position={season.modelPosition || [0, -2, 0]}
+      />
     </Suspense>
   );
 }

@@ -18,7 +18,9 @@ const SEASONS = [
     color: 'var(--color-spring-accent)',
     bg: 'var(--color-spring)',
     modelFile: 'spring_nick_high_quality.glb',
-    usdzFile: 'spring_nick_high_quality.usdz'
+    usdzFile: 'spring_nick_high_quality.usdz',
+    modelScale: 1.8,
+    modelPosition: [1.2, -3, 0]
   },
   {
     id: 'summer',
@@ -29,7 +31,9 @@ const SEASONS = [
     color: 'var(--color-summer-accent)',
     bg: 'var(--color-summer)',
     modelFile: 'summer_nick_high_quality.glb',
-    usdzFile: 'summer_nick_high_quality.usdz'
+    usdzFile: 'summer_nick_high_quality.usdz',
+    modelScale: 1.8,
+    modelPosition: [1.2, -3, 0]
   },
   {
     id: 'autumn',
@@ -40,7 +44,9 @@ const SEASONS = [
     color: 'var(--color-autumn-accent)',
     bg: 'var(--color-autumn)',
     modelFile: 'autumn_nick_high_quality.glb',
-    usdzFile: 'autumn_nick_high_quality.usdz'
+    usdzFile: 'autumn_nick_high_quality.usdz',
+    modelScale: 1.8,
+    modelPosition: [-1.2, -3, 0]
   },
   {
     id: 'winter',
@@ -51,7 +57,9 @@ const SEASONS = [
     color: 'var(--color-winter-accent)',
     bg: 'var(--color-winter)',
     modelFile: 'winter_nick_high_quality.glb',
-    usdzFile: 'winter_nick_high_quality.usdz'
+    usdzFile: 'winter_nick_high_quality.usdz',
+    modelScale: 1.8,
+    modelPosition: [1.2, -3, 0]
   },
 ];
 
@@ -102,7 +110,7 @@ export default function Home() {
     <div className={styles.mainWrapper} style={{ backgroundColor: currentSeason.bg }}>
 
       {/* 3D Background Layer */}
-      <Scene season={currentSeason.id} />
+      <Scene season={currentSeason} />
 
 
 

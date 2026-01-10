@@ -9,12 +9,12 @@ export default function Scene({ season }) {
   return (
     <Canvas
       camera={{ position: [0, 0, 10], fov: 45 }}
-      gl={{ 
-        antialias: false, 
+      gl={{
+        antialias: false,
         stencil: false,
         depth: true,
         powerPreference: "low-power",
-        alpha: true 
+        alpha: true
       }}
       onCreated={({ gl }) => {
         console.log('Scene: WebGL context created');
@@ -38,16 +38,16 @@ export default function Scene({ season }) {
       <SeasonalModel season={season} />
 
       {/* Ground Shadow */}
-      <ContactShadows 
-         position={[0, -2.5, 0]} 
-         opacity={0.4} 
-         scale={10} 
-         blur={2.5} 
-         far={4} 
+      <ContactShadows
+        position={[0, -2.5, 0]}
+        opacity={0.4}
+        scale={10}
+        blur={2.5}
+        far={4}
       />
 
       {/* Controls */}
-      <OrbitControls 
+      <OrbitControls
         enableZoom={false}
         enablePan={false}
         minPolarAngle={Math.PI / 2.5}
