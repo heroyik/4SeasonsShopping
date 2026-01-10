@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const ARViewer = ({ modelSrc, poster }) => {
+const ARViewer = ({ modelSrc, iosSrc, poster }) => {
   const viewerRef = useRef(null);
   const [arStatus, setArStatus] = useState('not-presenting'); // 'not-presenting', 'session-started', 'object-placed'
 
@@ -30,6 +30,7 @@ const ARViewer = ({ modelSrc, poster }) => {
       <model-viewer
         ref={viewerRef}
         src={modelSrc}
+        ios-src={iosSrc}
         poster={poster}
         ar
         ar-modes="scene-viewer quick-look webxr"

@@ -9,41 +9,49 @@ import styles from './page.module.css';
 import clsx from 'clsx';
 
 const SEASONS = [
-  { 
-    id: 'spring', 
-    name: 'Spring Collection', 
-    tagline: 'Bloom into style.', 
+  {
+    id: 'spring',
+    name: 'Spring Collection',
+    tagline: 'Bloom into style.',
     description: "Awaken your senses with breezy tailoring and soft pastels. Designed for the fresh start you've been waiting for.",
-    price: '$299', 
+    price: '$299',
     color: 'var(--color-spring-accent)',
-    bg: 'var(--color-spring)' 
+    bg: 'var(--color-spring)',
+    modelFile: 'spring_nick_high_quality.glb',
+    usdzFile: 'spring_nick_high_quality.usdz'
   },
-  { 
-    id: 'summer', 
-    name: 'Summer Vibes', 
-    tagline: 'Chasing Sunsets.', 
+  {
+    id: 'summer',
+    name: 'Summer Vibes',
+    tagline: 'Chasing Sunsets.',
     description: "Effortless linen meets bold attitude. Stay cool in the heat of the moment with our lightweight essentials.",
-    price: '$199', 
+    price: '$199',
     color: 'var(--color-summer-accent)',
-    bg: 'var(--color-summer)' 
+    bg: 'var(--color-summer)',
+    modelFile: 'summer_nick_high_quality.glb',
+    usdzFile: 'summer_nick_high_quality.usdz'
   },
-  { 
-    id: 'autumn', 
-    name: 'Autumn Essence', 
-    tagline: 'Layered Sophistication.', 
+  {
+    id: 'autumn',
+    name: 'Autumn Essence',
+    tagline: 'Layered Sophistication.',
     description: "Rich earth tones and structured layers. Embrace the changing breeze with warmth and undeniable class.",
-    price: '$349', 
+    price: '$349',
     color: 'var(--color-autumn-accent)',
-    bg: 'var(--color-autumn)' 
+    bg: 'var(--color-autumn)',
+    modelFile: 'autumn_nick_high_quality.glb',
+    usdzFile: 'autumn_nick_high_quality.usdz'
   },
-  { 
-    id: 'winter', 
-    name: 'Winter Chill', 
-    tagline: 'Bold Elegance.', 
+  {
+    id: 'winter',
+    name: 'Winter Chill',
+    tagline: 'Bold Elegance.',
     description: "Conquer the cold with premium wool and sharp silhouettes. Maximum warmth, zero compromise on style.",
-    price: '$450', 
+    price: '$450',
     color: 'var(--color-winter-accent)',
-    bg: 'var(--color-winter)' 
+    bg: 'var(--color-winter)',
+    modelFile: 'winter_nick_high_quality.glb',
+    usdzFile: 'winter_nick_high_quality.usdz'
   },
 ];
 
@@ -77,7 +85,7 @@ export default function Home() {
 
   const handleSeasonChange = (season) => {
     setIsPaused(true); // Stop auto-play when user interacts
-    
+
     // Determine direction for animation based on index
     const currentIndex = SEASONS.findIndex(s => s.id === currentSeason.id);
     const newIndex = SEASONS.findIndex(s => s.id === season.id);
@@ -92,7 +100,7 @@ export default function Home() {
 
   return (
     <div className={styles.mainWrapper} style={{ backgroundColor: currentSeason.bg }}>
-      
+
       {/* 3D Background Layer */}
       <Scene season={currentSeason.id} />
 
@@ -101,36 +109,39 @@ export default function Home() {
       {/* AR Modal Overlay */}
       <AnimatePresence>
         {isAROpen && (
-          <motion.div 
+          <motion.div
             className={styles.arOverlay}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3 }}
           >
-            <button 
-              className={styles.closeArBtn} 
+            <button
+              className={styles.closeArBtn}
               onClick={() => setIsAROpen(false)}
             >
               <X size={18} color="black" /> Close
             </button>
-            <ARViewer modelSrc={getAssetPath(`${currentSeason.id}.glb`)} />
+            <ARViewer
+              modelSrc={getAssetPath(currentSeason.modelFile)}
+              iosSrc={getAssetPath(currentSeason.usdzFile)}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* UI Overlay */}
       <div className={styles.uiContainer}>
-        
+
         {/* Main Text Content */}
         <div className={styles.heroContent}>
           <AnimatePresence mode='wait' custom={direction}>
             <motion.div
-               key={currentSeason.id}
-               initial={{ opacity: 0, x: direction * 50 }}
-               animate={{ opacity: 1, x: 0 }}
-               exit={{ opacity: 0, x: direction * -50 }}
-               transition={{ duration: 0.5, ease: "circOut" }}
+              key={currentSeason.id}
+              initial={{ opacity: 0, x: direction * 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction * -50 }}
+              transition={{ duration: 0.5, ease: "circOut" }}
             >
               <span className={styles.tagline}>{currentSeason.tagline}</span>
               <h1 className={styles.title} style={{ color: currentSeason.color }}>
@@ -139,7 +150,7 @@ export default function Home() {
               <h2 className={styles.subtitle}>
                 {currentSeason.name.split(' ')[1] || 'Collection'}
               </h2>
-              
+
               <p className={styles.description}>
                 {currentSeason.description}
               </p>
@@ -171,15 +182,15 @@ export default function Home() {
                 className={clsx(styles.seasonBtn, currentSeason.id === season.id && styles.active)}
                 aria-label={`Select ${season.name}`}
               >
-                <div 
-                  className={styles.colorDot} 
+                <div
+                  className={styles.colorDot}
                   style={{ backgroundColor: season.color }}
                 />
                 <span className={styles.seasonName}>{season.id}</span>
                 {currentSeason.id === season.id && (
-                  <motion.div 
-                    layoutId="active-ring" 
-                    className={styles.activeRing} 
+                  <motion.div
+                    layoutId="active-ring"
+                    className={styles.activeRing}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
