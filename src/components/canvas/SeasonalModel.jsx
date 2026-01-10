@@ -1,23 +1,34 @@
 "use client";
 
-import { useGLTF, Float, Html } from '@react-three/drei';
-import { Suspense } from 'react';
+import { useGLTF, Float, Center } from '@react-three/drei';
+import { Suspense, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { getAssetPath } from '@/config';
 
 function Model({ url, scale = 1, ...props }) {
   const { scene } = useGLTF(url);
+  const groupRef = useRef();
+
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.5; // Rotate in place
+    }
+  });
 
   return (
     <Float
-      speed={2} // Animation speed
-      rotationIntensity={0.5} // XYZ rotation intensity
-      floatIntensity={0.5} // Up/down float intensity
+      speed={1.5} // Slightly slower
+      rotationIntensity={0.2}
+      floatIntensity={0.5}
     >
-      <primitive
-        object={scene}
-        scale={scale}
-        {...props}
-      />
+      <group ref={groupRef} {...props}>
+        <Center top>
+          <primitive
+            object={scene}
+            scale={scale}
+          />
+        </Center>
+      </group>
     </Float>
   );
 }
@@ -44,9 +55,10 @@ export default function SeasonalModel({ season }) {
   return (
     <Suspense fallback={<Box scale={0.5} />}>
       <Model
+        key={url}
         url={url}
-        scale={season.modelScale || 1.8}
-        position={season.modelPosition || [0, -2, 0]}
+        scale={season.modelScale || 2.5}
+        position={season.modelPosition || [0, -2.5, 0]}
       />
     </Suspense>
   );

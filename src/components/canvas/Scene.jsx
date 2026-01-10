@@ -52,8 +52,8 @@ export default function Scene({ season }) {
         enablePan={false}
         minPolarAngle={Math.PI / 2.5}
         maxPolarAngle={Math.PI / 1.8}
-        autoRotate={true}
-        autoRotateSpeed={0.5}
+        autoRotate={false}
+        target={[0, 0, 0]}
       />
     </Canvas>
   );

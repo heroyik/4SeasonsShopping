@@ -19,8 +19,8 @@ const SEASONS = [
     bg: 'var(--color-spring)',
     modelFile: 'spring_nick_high_quality.glb',
     usdzFile: 'spring_nick_high_quality.usdz',
-    modelScale: 1.8,
-    modelPosition: [1.2, -3, 0]
+    modelScale: 2.5,
+    modelPosition: [0, -2.5, 0]
   },
   {
     id: 'summer',
@@ -32,8 +32,8 @@ const SEASONS = [
     bg: 'var(--color-summer)',
     modelFile: 'summer_nick_high_quality.glb',
     usdzFile: 'summer_nick_high_quality.usdz',
-    modelScale: 1.8,
-    modelPosition: [1.2, -3, 0]
+    modelScale: 2.5,
+    modelPosition: [0, -2.5, 0]
   },
   {
     id: 'autumn',
@@ -45,8 +45,8 @@ const SEASONS = [
     bg: 'var(--color-autumn)',
     modelFile: 'autumn_nick_high_quality.glb',
     usdzFile: 'autumn_nick_high_quality.usdz',
-    modelScale: 1.8,
-    modelPosition: [-1.2, -3, 0]
+    modelScale: 2.5,
+    modelPosition: [0, -2.5, 0]
   },
   {
     id: 'winter',
@@ -58,8 +58,8 @@ const SEASONS = [
     bg: 'var(--color-winter)',
     modelFile: 'winter_nick_high_quality.glb',
     usdzFile: 'winter_nick_high_quality.usdz',
-    modelScale: 1.8,
-    modelPosition: [1.2, -3, 0]
+    modelScale: 2.5,
+    modelPosition: [0, -2.5, 0]
   },
 ];
 
